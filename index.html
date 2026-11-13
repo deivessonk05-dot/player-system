@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b14">
+<title>PLAYER SYSTEM 3.0</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080b14;color:#f3f5ff;font-family:Arial,sans-serif}
+header{padding:25px 20px;background:linear-gradient(135deg,#101b36,#11111d);border-bottom:1px solid #263453}
+small{color:#8fa9d9;letter-spacing:3px}
+h1{font-size:25px;margin:10px 0;color:#69c9ff}
+h2{font-size:18px}
+main{max-width:650px;margin:auto;padding:18px}
+.card{background:#111827;border:1px solid #26344e;border-radius:14px;padding:17px;margin-bottom:15px}
+.rank{color:#64d8ff;font-weight:bold}
+.bar{height:10px;background:#26344e;border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#287cff,#62e5ff)}
+button{background:#1768bd;color:white;border:0;border-radius:9px;padding:11px 14px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.4}
+.task{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #29344a}
+.task:last-child{border:0}
+.task.done span{text-decoration:line-through;color:#8290a8}
+.stat{display:flex;justify-content:space-between;margin:12px 0}
+.stat button{padding:5px 10px}
+input{background:#080e1b;color:white;border:1px solid #334765;border-radius:8px;padding:11px;width:100%;margin:6px 0}
+.muted{color:#9baac3;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<small>YOUR PERSONAL EVOLUTION SYSTEM</small>
+<h1>PLAYER SYSTEM 3.0</h1>
+<div class="rank" id="rank">RANK E</div>
+</header>
+
+<main>
+<section class="card">
+<h2>👤 JOGADOR</h2>
+<div id="level">NÍVEL 1</div>
+<p><span id="xp">0</span> / <span id="next">100</span> XP</p>
+<div class="bar"><div class="fill" id="xpbar"></div></div>
+<p class="muted" id="status">Sua jornada começa agora.</p>
+</section>
+
+<section class="card">
+<h2>⚔️ MISSÕES DIÁRIAS</h2>
+<div id="missions"></div>
+</section>
+
+<section class="card">
+<h2>📊 ATRIBUTOS</h2>
+<div id="stats"></div>
+</section>
+
+<section class="card">
+<h2>➕ NOVA MISSÃO</h2>
+<input id="newmission" placeholder="Digite sua missão">
+<button onclick="addMission()">Adicionar missão</button>
+</section>
+
+<section class="card">
+<h2>🏆 HISTÓRICO</h2>
+<p id="history" class="muted">Nenhuma missão concluída ainda.</p>
+<button onclick="resetSystem()" style="background:#9b3030">Reiniciar progresso</button>
+</section>
+<p class="muted">PLAYER SYSTEM 3.0 • Evolua todos os dias.</p>
+</main>
+
+<script>
+const defaultMissions=[
+ {name:"Fazer atividade física",xp:30,done:false},
+ {name:"Estudar por 30 minutos",xp:25,done:false},
+ {name:"Organizar o ambiente",xp:15,done:false},
+ {name:"Ler por 20 minutos",xp:20,done:false},
+ {name:"Cumprir uma meta pessoal",xp:20,done:false}
+];
+
+let data=JSON.parse(localStorage.getItem("player30"))||{
+ xp:0,level:1,missions:defaultMissions,
+ stats:{Força:1,Resistência:1,Agilidade:1,Inteligência:1,Disciplina:1},
+ history:[]
+};
+
+function save(){
+ localStorage.setItem("player30",JSON.stringify(data));
+ render();
+}
+
+function rank(){
+ if(data.level>=50)return "S";
+ if(data.level>=30)return "A";
+ if(data.level>=20)return "B";
+ if(data.level>=10)return "C";
+ if(data.level>=5)return "D";
+ return "E";
+}
+
+function complete(i){
+ let m=data.missions[i];
+ if(m.done)return;
+ m.done=true;
+ data.xp+=m.xp;
+ data.history.unshift(m.name);
+ while(data.xp>=data.level*100){
+  data.xp-=data.level*100;
+  data.level++;
+ }
+ save();
+}
+
+function addMission(){
+ let field=document.getElementById("newmission");
+ let name=field.value.trim();
+ if(!name)return;
+ data.missions.push({name,xp:20,done:false});
+ field.value="";
+ save();
+}
+
+function render(){
+ document.getElementById("level").textContent="NÍVEL "+data.level;
+ document.getElementById("xp").textContent=data.xp;
+ document.getElementById("next").textContent=data.level*100;
+ document.getElementById("xpbar").style.width=(data.xp/(data.level*100)*100)+"%";
+ document.getElementById("rank").textContent="RANK "+rank();
+ document.getElementById("status").textContent=
+ "Continue evoluindo. Cada missão concluída fortalece seu personagem.";
+
+ document.getElementById("missions").innerHTML="";
+ data.missions.forEach((m,i)=>{
+  let div=document.createElement("div");
+  div.className="task"+(m.done?" done":"");
+  let span=document.createElement("span");
+  span.textContent=m.name+" ("+m.xp+" XP)";
+  let btn=document.createElement("button");
+  btn.textContent=m.done?"Concluída":"Concluir";
+  btn.disabled=m.done;
+  btn.onclick=()=>complete(i);
+  div.append(span,btn);
+  document.getElementById("missions").append(div);
+ });
+
+ document.getElementById("stats").innerHTML="";
+ Object.entries(data.stats).forEach(([name,value])=>{
+  let div=document.createElement("div");
+  div.className="stat";
+  let label=document.createElement("span");
+  label.textContent=name+": "+value;
+  let btn=document.createElement("button");
+  btn.textContent="+";
+  btn.onclick=()=>{
+   if(data.xp>=10){
+    data.xp-=10;
+    data.stats[name]++;
+    save();
+   }else{
+    alert("Você precisa de 10 XP para evoluir um atributo.");
+   }
+  };
+  div.append(label,btn);
+  document.getElementById("stats").append(div);
+ });
+ document.getElementById("history").textContent=
+ data.history.length?data.history.slice(0,10).join(" • "):
+ "Nenhuma missão concluída ainda.";
+}
+
+function resetSystem(){
+ if(confirm("Tem certeza que deseja apagar todo o progresso?")){
+  localStorage.removeItem("player30");
+  location.reload();
+ }
+}
+
+render();
+</script>
+</body>
+</html>
+  
