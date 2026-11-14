@@ -1,221 +1,304 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#070b14">
-<title>PLAYER SYSTEM 3.0</title>
+<title>PLAYER SYSTEM</title>
 <style>
-:root{--bg:#070b14;--panel:#101a2b;--panel2:#0b1422;--line:#263d5d;--cyan:#65dcff;--blue:#258cff;--muted:#91a4bd;--white:#edf6ff;--gold:#f6c96b;--green:#63e6b0;--red:#ff7185}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#18345b 0%,#0a1221 42%,var(--bg) 78%);color:var(--white);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}
-button,input,select{font:inherit}button{cursor:pointer}
-.top{padding:24px 18px 18px;border-bottom:1px solid #29466b;background:linear-gradient(120deg,rgba(18,43,76,.95),rgba(8,15,28,.95));position:relative;overflow:hidden}
-.top:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #3d80b9;border-radius:50%;right:-100px;top:-145px;box-shadow:0 0 0 24px #1b56801c,0 0 0 50px #1b568012}
-.kicker{font-size:10px;letter-spacing:4px;color:#8db8df;text-transform:uppercase}.brand{font-weight:900;font-size:clamp(24px,7vw,34px);letter-spacing:1px;color:var(--cyan);margin:8px 0 4px;text-shadow:0 0 22px #49baff55}.subtitle{font-size:11px;letter-spacing:3px;color:#9fb4ce}.toprow{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:1}.status-pill{font-size:10px;border:1px solid #3e9b89;color:var(--green);border-radius:30px;padding:7px 10px;white-space:nowrap}
-main{max-width:850px;margin:auto;padding:16px 14px 100px}.hero{border:1px solid #38628c;border-radius:20px;padding:20px;background:linear-gradient(135deg,#142943,#0d1727 70%);box-shadow:0 12px 35px #0005;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #3476a2;border-radius:50%;right:-100px;top:-110px;box-shadow:0 0 0 20px #2875a015,0 0 0 42px #2875a010}
-.hero-label{font-size:11px;letter-spacing:3px;color:#65bfff}.hero h1{font-size:27px;margin:12px 0 3px}.muted{color:var(--muted)}.rank{color:var(--cyan);font-weight:800;letter-spacing:2px}.hero-meta{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-top:24px}.level{font-size:39px;font-weight:900;color:var(--cyan);line-height:1}.xp{text-align:right;color:#c6d7e9;font-size:13px}.bar{height:11px;background:#07101d;border:1px solid #34516e;border-radius:20px;overflow:hidden;margin-top:14px}.bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#1677df,#65e5ff);box-shadow:0 0 14px #4bcaff;transition:width .35s}
-.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 12px;scrollbar-width:thin}.tabs button{flex:0 0 auto;border:1px solid #2c4c70;background:#10243a;color:#c8d9ec;border-radius:12px;padding:11px 15px}.tabs button.active{background:#1269a5;border-color:#54cfff;color:white;box-shadow:0 0 18px #168bca55}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:linear-gradient(145deg,#111e30,#0c1523);border:1px solid var(--line);border-radius:17px;padding:16px;margin:0 0 12px;box-shadow:0 8px 24px #0002}.card h2{margin:0 0 14px;font-size:16px;letter-spacing:1.4px;color:#7edfff}.card h3{font-size:14px;margin:0 0 8px}.metric{background:#0a1422;border:1px solid #263f5b;border-radius:13px;padding:13px;min-height:83px}.metric small{display:block;color:var(--muted);font-size:10px;letter-spacing:1px;text-transform:uppercase}.metric strong{display:block;font-size:24px;margin-top:6px}
-.section{display:none}.section.active{display:block}.mission{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #26364b}.mission:last-child{border:0}.mission.done .mname{text-decoration:line-through;color:#8092a8}.mname{font-size:14px;font-weight:600}.mmeta{font-size:11px;color:var(--muted);margin-top:4px}.btn{border:1px solid #4a9dd2;background:linear-gradient(135deg,#1769b0,#124c86);color:white;border-radius:10px;padding:10px 13px;font-weight:700;font-size:12px}.btn:disabled{opacity:.4;cursor:not-allowed}.btn.secondary{background:#12243a;border-color:#365271;color:#cde5fa}.btn.danger{background:#421d2a;border-color:#944457}.btn.gold{background:#604719;border-color:#b88a39;color:#ffe5a7}.btn.small{padding:7px 9px}.formrow{display:flex;gap:8px;margin-top:10px}.formrow input,.formrow select,.field{min-width:0;width:100%;background:#081321;border:1px solid #304966;border-radius:10px;color:white;padding:11px;outline:none}.formrow input:focus,.field:focus{border-color:var(--cyan)}.statrow{margin:14px 0}.stathead{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px}.statbar{height:8px;background:#07101b;border:1px solid #29415e;border-radius:20px;overflow:hidden}.statbar span{display:block;height:100%;background:linear-gradient(90deg,#1677d8,#5be0ff)}.smalltext{font-size:11px;color:var(--muted);line-height:1.5}.notice{border-left:3px solid var(--cyan);padding:10px 12px;background:#0c2033;border-radius:0 9px 9px 0;color:#bfd9ef;font-size:12px;margin:12px 0}.tag{display:inline-block;border:1px solid #355676;border-radius:20px;padding:4px 8px;color:#9edfff;font-size:10px;margin:3px}.empty{text-align:center;padding:22px;color:var(--muted);font-size:13px}.record{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #24364b;font-size:12px}.record:last-child{border:0}.record strong{color:var(--green)}.footer{text-align:center;color:#647c98;font-size:10px;letter-spacing:2px;padding:24px 0 10px}.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);background:#122d45;border:1px solid #58cfff;color:#e8f8ff;padding:12px 17px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:9;box-shadow:0 8px 30px #0009;font-size:13px}.toast.show{opacity:1;transform:translate(-50%,0)}.hidden{display:none!important}
-@media(max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:18px}.card{padding:14px}.mission{align-items:flex-start}.mission .btn{white-space:nowrap}.mname{font-size:13px}}
-</style>
-
-<style id="solo-hud-upgrade">
-:root{
- --bg:#030812;--panel:#071525;--panel2:#0a1c30;--line:#1d6b91;
- --cyan:#7be8ff;--blue:#258bff;--ice:#d9f8ff;--muted:#8ba9bf;
- --gold:#f4d17a;--green:#70f0c0;--red:#ff6688;
+:root {
+  --bg:#070b14;
+  --panel:#101a2b;
+  --blue:#48baff;
+  --cyan:#70eaff;
+  --muted:#8294ad;
+  --line:#203650;
 }
-html{background:#030812}
+*{box-sizing:border-box}
 body{
- background:
-  radial-gradient(ellipse at 50% 0%,#0b4261 0%,transparent 42%),
-  radial-gradient(ellipse at 100% 55%,#10284a55 0%,transparent 38%),
-  linear-gradient(180deg,#030812,#050b16 55%,#02060d);
- color:#e9faff;letter-spacing:.15px;position:relative;isolation:isolate
+  margin:0;background:
+  radial-gradient(ellipse at 50% -20%,#173c65 0%,transparent 55%),
+  var(--bg);
+  color:#eef7ff;font-family:Arial,sans-serif;
+  min-height:100vh;
 }
-body:before{
- content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.23;
- background-image:linear-gradient(#54cfff0c 1px,transparent 1px),linear-gradient(90deg,#54cfff0c 1px,transparent 1px);
- background-size:34px 34px;
- mask-image:linear-gradient(to bottom,black,transparent 85%)
+header{
+  padding:22px 18px 15px;
+  border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;
+  align-items:center;
 }
-body:after{
- content:"";position:fixed;inset:0;z-index:8;pointer-events:none;opacity:.12;
- background:repeating-linear-gradient(0deg,transparent 0 3px,#8ceaff12 4px,transparent 5px)
+.logo{font-size:19px;font-weight:900;letter-spacing:2px}
+.logo span{color:var(--blue)}
+.status{font-size:10px;color:#63e6bd;letter-spacing:1px}
+main{max-width:650px;margin:auto;padding:18px}
+.eyebrow{font-size:10px;color:var(--blue);letter-spacing:3px}
+h1{font-size:27px;margin:8px 0}
+.subtitle{color:var(--muted);font-size:12px}
+.panel{
+  background:linear-gradient(145deg,#14243a,#0b1220);
+  border:1px solid var(--line);
+  border-radius:15px;padding:18px;margin:15px 0;
+  box-shadow:0 8px 30px #0005;
 }
-.top{
- background:linear-gradient(115deg,#071827f5,#092944eF 52%,#061321f5);
- border-bottom:1px solid #4bd7ff77;box-shadow:0 12px 40px #00bfff18;
- padding:25px 18px 23px
+.profile{display:flex;align-items:center;gap:15px}
+.avatar{
+  width:65px;height:65px;border:1px solid var(--blue);
+  border-radius:13px;display:grid;place-items:center;
+  font-size:30px;color:var(--cyan);
+  background:#102d49;box-shadow:0 0 22px #38baff25;
 }
-.top:before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 15%,#8cecff0c 48%,transparent 75%);animation:hudSweep 7s linear infinite}
-@keyframes hudSweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.brand{font-size:clamp(27px,8vw,39px);font-weight:950;letter-spacing:2px;color:#baf5ff;text-shadow:0 0 8px #54dfff,0 0 28px #1ba9ff99}
-.kicker{color:#8eeaff;letter-spacing:4px}
-.subtitle{color:#82aeca;letter-spacing:3.5px}
-.status-pill{background:#062c35aa;box-shadow:0 0 18px #32e6c333;border-color:#52e8c6}
-main{max-width:900px}
-.hero{
- border:1px solid #54dfff88;border-radius:4px 22px 4px 22px;
- background:linear-gradient(135deg,#0a2942f2,#071423f5 60%,#0a1d32f2);
- box-shadow:inset 0 0 32px #2abaff13,0 0 0 1px #1d83a533,0 15px 40px #0008;
+.small{font-size:11px;color:var(--muted)}
+.rank{color:var(--cyan);font-size:12px;font-weight:bold}
+.level{font-size:25px;font-weight:900}
+.xphead{display:flex;justify-content:space-between;
+font-size:11px;margin:20px 0 8px}
+.track{height:9px;background:#26374c;border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,#258cff,#75edff);
+box-shadow:0 0 12px #45caff;transition:.4s}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{
+  background:#0b1422;border:1px solid var(--line);
+  border-radius:11px;padding:13px;
 }
-.hero:before{content:"SYSTEM WINDOW // PLAYER STATUS";display:block;color:#79e9ff;font-size:9px;letter-spacing:3px;border-bottom:1px solid #4bcfff55;padding-bottom:10px}
-.hero-label{margin-top:12px;color:#a1f1ff;font-size:10px}
-.hero h1{letter-spacing:3px;text-shadow:0 0 18px #3abfff55}
-.level{font-size:48px;text-shadow:0 0 22px #42cfff88}
-.rank{display:inline-block;padding:5px 12px;border:1px solid #55dfff88;background:#06263b;color:#a8f4ff;box-shadow:0 0 16px #16baff22;clip-path:polygon(0 0,92% 0,100% 35%,100% 100%,8% 100%,0 65%)}
-.bar{height:13px;border-radius:2px;border:1px solid #4aa9d0;background:#020b15}
-.bar>span{background:linear-gradient(90deg,#0877d9,#55dfff,#d4fbff);box-shadow:0 0 16px #4bdcff}
-.tabs{padding-top:17px}
-.tabs button{border-radius:3px 12px 3px 12px;background:#07192a;border-color:#245878;color:#9bc9dc;text-transform:uppercase;font-size:10px;letter-spacing:1px}
-.tabs button.active{background:linear-gradient(110deg,#07568a,#0a8eb4);border-color:#8cf0ff;box-shadow:0 0 18px #00bfff55;color:#fff}
-.card{
- border:1px solid #235475;border-radius:4px 16px 4px 16px;
- background:linear-gradient(145deg,#0a1d30f5,#06111ff7);
- box-shadow:inset 0 0 25px #22baff0a,0 8px 25px #0005;position:relative;overflow:hidden
+.stat-name{font-size:10px;color:var(--muted);letter-spacing:1px}
+.stat-value{font-size:23px;font-weight:bold;margin-top:7px}
+.stat-icon{color:var(--blue);float:right}
+.section-title{font-size:14px;letter-spacing:1px;margin-bottom:14px}
+.mission{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 0;border-bottom:1px solid #243449;
 }
-.card:before{content:"";position:absolute;left:0;top:0;width:35px;height:2px;background:#75eaff;box-shadow:0 0 12px #75eaff}
-.card h2{color:#9ceeff;letter-spacing:2px;font-size:13px}
-.metric{background:linear-gradient(145deg,#0b2940,#071525);border:1px solid #245b7a;border-radius:3px 12px 3px 12px}
-.metric strong{color:#d7f8ff;text-shadow:0 0 12px #31bfff44}
-.btn{border-radius:3px 11px 3px 11px;background:linear-gradient(110deg,#07558e,#087fae);border-color:#6ddfff;box-shadow:0 0 12px #008dcb22;text-transform:uppercase;letter-spacing:.6px}
-.btn:active{transform:scale(.97)}
-.btn.secondary{background:#081c2d;border-color:#356d8b;color:#b9eaff}
-.btn.gold{background:#4c3b1b;border-color:#d7b45b}
-.btn.danger{background:#351523}
-.formrow input,.formrow select,.field{border-radius:3px 10px 3px 10px;background:#030d19;border-color:#28516c}
-.mission{border-bottom:1px solid #1a405a}
-.tag{border-radius:3px 9px 3px 9px;border-color:#397d9e;color:#9eeeff}
-.notice{background:#071d30;border-left-color:#67eaff;color:#c7efff;box-shadow:inset 0 0 20px #00bfff0b}
-.toast{border-radius:3px 13px 3px 13px;background:#06243a;border-color:#7be8ff;box-shadow:0 0 28px #00bfff55}
-.footer{color:#4e819d}
-.system-banner{
- margin:14px 0 0;padding:12px 14px;border:1px solid #48c9ee66;
- background:linear-gradient(90deg,#06253b,#071525);color:#b9efff;
- font-size:10px;letter-spacing:1.4px;display:flex;justify-content:space-between;gap:10px;
- clip-path:polygon(0 0,97% 0,100% 25%,100% 100%,3% 100%,0 75%)
+.mission:last-child{border:0}
+.mission-icon{
+  width:40px;height:40px;display:grid;place-items:center;
+  background:#102a43;border-radius:10px;font-size:19px;
 }
-.system-banner b{color:#7cecff}
-@media(prefers-reduced-motion:no-preference){
- .hero{animation:panelIn .7s ease both}
- .card{animation:panelIn .55s ease both}
- @keyframes panelIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.mission-info{flex:1}
+.mission-name{font-size:13px;font-weight:bold}
+.reward{font-size:10px;color:var(--blue);margin-top:5px}
+.complete{
+  border:1px solid #278bc4;background:#102d47;
+  color:#8ddfff;border-radius:8px;padding:9px 10px;
+  font-size:10px;font-weight:bold;
+}
+.complete:disabled{opacity:.4;color:#72d9b4;border-color:#285a4c}
+button{cursor:pointer}
+.notice{
+  text-align:center;color:var(--muted);
+  font-size:10px;line-height:1.7;padding:10px;
+}
+nav{
+  display:flex;justify-content:space-around;
+  position:sticky;bottom:0;background:#09111e;
+  border-top:1px solid var(--line);padding:14px 4px;
+}
+nav a{font-size:10px;color:var(--muted);text-decoration:none}
+nav a:first-child{color:var(--cyan)}
+footer{text-align:center;padding:20px;color:#536a85;font-size:9px;letter-spacing:2px}
+@media(min-width:500px){
+  .stats{grid-template-columns:repeat(3,1fr)}
 }
 </style>
-
 </head>
 <body>
-<header class="top">
- <div class="toprow"><div><div class="kicker">YOUR PERSONAL EVOLUTION SYSTEM</div><div class="brand">PLAYER SYSTEM 3.0</div><div class="subtitle">DISCIPLINA · CONSISTÊNCIA · EVOLUÇÃO</div></div><div class="status-pill">● SISTEMA ATIVO</div></div>
+<header>
+  <div class="logo">PLAYER <span>SYSTEM</span></div>
+  <div class="status">● SYSTEM ONLINE</div>
 </header>
 
-<div class="system-banner"><span>▣ SYSTEM INTERFACE / ONLINE</span><b>PLAYER AUTHENTICATED</b></div>
-
 <main>
- <section class="hero">
-  <div class="hero-label">SISTEMA ONLINE / PROTOCOLO DO JOGADOR</div>
-  <h1 id="playerName">JOGADOR</h1><div class="rank" id="rank">RANK E</div>
-  <div class="hero-meta"><div><div class="muted" style="font-size:11px;margin-bottom:7px">NÍVEL ATUAL</div><div class="level" id="level">01</div></div><div class="xp"><strong id="xp">0</strong> / <span id="nextXp">100</span> XP<br><span class="muted">EXPERIÊNCIA</span></div></div>
-  <div class="bar"><span id="xpbar"></span></div>
-  <div class="smalltext" style="margin-top:10px" id="rankHint">Sua evolução começa com a próxima missão.</div>
- </section>
- <nav class="tabs" aria-label="Navegação">
-  <button class="active" data-tab="painel">Painel</button><button data-tab="missoes">Missões</button><button data-tab="treino">Treino</button><button data-tab="atributos">Atributos</button><button data-tab="conquistas">Conquistas</button><button data-tab="historico">Histórico</button><button data-tab="perfil">Perfil</button>
- </nav>
+  <div class="eyebrow">SISTEMA DE EVOLUÇÃO PESSOAL</div>
+  <h1>Bem-vindo, Jogador.</h1>
+  <div class="subtitle">Sua evolução começa com a próxima missão.</div>
 
- <section class="section active" id="painel">
-  <div class="grid">
-   <div class="card"><h2>STATUS DO JOGADOR</h2><div class="grid">
-    <div class="metric"><small>Sequência</small><strong id="streak">0 dias</strong></div>
-    <div class="metric"><small>Treinos</small><strong id="workouts">0</strong></div>
-    <div class="metric"><small>Missões</small><strong id="completed">0</strong></div>
-    <div class="metric"><small>Classe</small><strong id="className">Novato</strong></div>
-   </div></div>
-   <div class="card"><h2>ATRIBUTOS PRINCIPAIS</h2><div id="miniStats"></div></div>
+  <section class="panel">
+    <div class="profile">
+      <div class="avatar">⚔</div>
+      <div>
+        <div class="small">JOGADOR IDENTIFICADO</div>
+        <div style="font-size:19px;font-weight:bold">PLAYER</div>
+        <div class="rank" id="rank">RANK E — INICIANTE</div>
+      </div>
+    </div>
+    <div class="xphead">
+      <span id="level">NÍVEL 1</span>
+      <span id="xptext">0 / 100 XP</span>
+    </div>
+    <div class="track"><div class="fill" id="xpbar"></div></div>
+    <div class="small" style="margin-top:10px" id="next">100 XP para o próximo nível</div>
+  </section>
+
+  <div class="section-title">▰ STATUS DO JOGADOR</div>
+  <section class="panel">
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-icon">✦</span>
+        <div class="stat-name">FORÇA</div>
+        <div class="stat-value" id="strength">1</div>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">◈</span>
+        <div class="stat-name">RESISTÊNCIA</div>
+        <div class="stat-value" id="endurance">1</div>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">➤</span>
+        <div class="stat-name">AGILIDADE</div>
+        <div class="stat-value" id="agility">1</div>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">♥</span>
+        <div class="stat-name">VITALIDADE</div>
+        <div class="stat-value" id="vitality">1</div>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">◆</span>
+        <div class="stat-name">DISCIPLINA</div>
+        <div class="stat-value" id="discipline">1</div>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">★</span>
+        <div class="stat-name">MOEDAS</div>
+        <div class="stat-value" id="coins">0</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-title">▰ MISSÕES DIÁRIAS</div>
+  <section class="panel">
+    <div class="small" style="margin-bottom:14px">
+      Complete desafios adequados ao seu ritmo.
+    </div>
+    <div id="missions"></div>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">MENSAGEM DO SISTEMA</div>
+    <h2 style="font-size:17px">O despertar começou.</h2>
+    <div class="small">
+      Não é necessário ser perfeito. Evolua gradualmente,
+      respeite seus limites e mantenha a consistência.
+    </div>
+  </section>
+
+  <div class="notice">
+    SEU PROGRESSO É SALVO NESTE DISPOSITIVO.<br>
+    MISSÕES PODEM SER ADAPTADAS AO SEU NÍVEL.
   </div>
-  <div class="card"><h2>MISSÃO PRIORITÁRIA DE HOJE</h2><div style="font-size:29px;font-weight:900" id="todayCount">0/5</div><div class="muted" style="font-size:12px;margin:5px 0 12px">missões diárias concluídas</div><div class="bar"><span id="todayBar"></span></div><button class="btn secondary" style="margin-top:13px" onclick="go('missoes')">Ver missões</button></div>
-  <div class="card"><h2>PROTOCOLO DO SISTEMA</h2><div class="notice">A consistência vale mais que a intensidade isolada. Complete missões reais, registre seus treinos e evolua gradualmente.</div><div class="smalltext">Próximo objetivo: <strong id="nextGoal">Concluir sua primeira missão</strong></div></div>
- </section>
-
- <section class="section" id="missoes">
-  <div class="card"><h2>⚔ MISSÕES DIÁRIAS</h2><div class="smalltext">As missões diárias renovam automaticamente a cada novo dia. XP é concedido uma única vez por missão.</div><div id="dailyList"></div></div>
-  <div class="card"><h2>◈ MISSÕES SEMANAIS</h2><div class="smalltext">Desafios de maior duração. Complete no seu ritmo durante a semana.</div><div id="weeklyList"></div></div>
-  <div class="card"><h2>＋ CRIAR MISSÃO PERSONALIZADA</h2><div class="formrow"><input id="missionInput" maxlength="70" placeholder="Ex.: Caminhar por 20 minutos"></div><div class="formrow"><select id="missionType"><option value="daily">Missão diária · 20 XP</option><option value="weekly">Missão semanal · 60 XP</option></select><button class="btn" onclick="addMission()">Adicionar</button></div></div>
- </section>
-
- <section class="section" id="treino">
-  <div class="card"><h2>◈ CENTRAL DE TREINAMENTO</h2><div class="notice">Registre apenas atividades que você realmente concluiu. Aumente a dificuldade aos poucos e respeite descanso, técnica e recuperação.</div><div class="grid" id="trainingGrid"></div></div>
-  <div class="card"><h2>REGISTRAR TREINO</h2><div class="formrow"><select id="trainingType"><option value="Força">Força / calistenia</option><option value="Resistência">Resistência / cardio</option><option value="Mobilidade">Mobilidade / alongamento</option><option value="Intelecto">Estudo / leitura</option><option value="Disciplina">Hábito / disciplina</option></select></div><div class="formrow"><input id="trainingMinutes" type="number" min="5" max="240" value="20" placeholder="Duração em minutos"></div><div class="formrow"><input id="trainingNote" maxlength="80" placeholder="Observação (opcional)"></div><button class="btn" style="width:100%;margin-top:10px" onclick="logTraining()">Registrar atividade concluída</button></div>
-  <div class="card"><h2>ÚLTIMOS TREINOS</h2><div id="trainingHistory"></div></div>
- </section>
-
- <section class="section" id="atributos">
-  <div class="card"><h2>📊 ATRIBUTOS DO JOGADOR</h2><div class="smalltext">Atributos representam sua evolução registrada. Pontos de atributo são obtidos ao subir de nível. Cada melhoria custa 1 ponto.</div><div class="notice">Pontos disponíveis: <strong id="points">0</strong></div><div id="allStats"></div></div>
- </section>
-
- <section class="section" id="conquistas">
-  <div class="card"><h2>🏆 CONQUISTAS E TÍTULOS</h2><div class="smalltext">Desbloqueie conquistas ao cumprir marcos reais de progresso.</div><div id="achievementList"></div></div>
- </section>
-
- <section class="section" id="historico">
-  <div class="card"><h2>📜 REGISTRO DO SISTEMA</h2><div class="smalltext">Suas missões, níveis e atividades ficam salvos neste dispositivo.</div><div id="historyList"></div></div>
- </section>
-
- <section class="section" id="perfil">
-  <div class="card"><h2>👤 PERFIL DO JOGADOR</h2><label class="smalltext">Nome ou codinome</label><input class="field" id="nameInput" maxlength="24" placeholder="JOGADOR"><button class="btn" style="margin-top:10px" onclick="saveName()">Salvar nome</button></div>
-  <div class="card"><h2>⚙ CONFIGURAÇÕES</h2><div class="smalltext">O progresso fica salvo no armazenamento local deste navegador. Limpar os dados do navegador pode apagar seu progresso. Ainda não há sincronização entre dispositivos.</div><button class="btn secondary" style="margin-top:12px" onclick="exportData()">Exportar backup</button><div class="formrow"><label class="btn secondary" style="display:block;text-align:center;flex:1">Importar backup<input type="file" accept="application/json" id="importFile" hidden onchange="importData(event)"></label></div><button class="btn danger" style="margin-top:12px" onclick="resetData()">Apagar progresso e reiniciar</button></div>
- </section>
- <div class="footer">PLAYER SYSTEM 3.0 · EVOLUA UM DIA DE CADA VEZ</div>
 </main>
-<div class="toast" id="toast"></div>
+
+<nav>
+  <a href="#top">⌂ INÍCIO</a>
+  <a href="#missions">⚔ MISSÕES</a>
+  <a href="#strength">◈ STATUS</a>
+</nav>
+
+<footer>PLAYER SYSTEM · VERSION 1.0 · AWAKENING</footer>
+
 <script>
-const today=()=>new Date().toLocaleDateString('en-CA');
-const weekKey=()=>{let d=new Date();let day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d.toLocaleDateString('en-CA')};
-const defaultsDaily=[
- {id:'d1',name:'Fazer atividade física',xp:30,stat:'Força'},
- {id:'d2',name:'Estudar por 30 minutos',xp:25,stat:'Intelecto'},
- {id:'d3',name:'Organizar o ambiente',xp:15,stat:'Disciplina'},
- {id:'d4',name:'Ler por 20 minutos',xp:20,stat:'Intelecto'},
- {id:'d5',name:'Cumprir uma meta pessoal',xp:20,stat:'Disciplina'}
-];
-const defaultsWeekly=[
- {id:'w1',name:'Realizar 3 sessões de atividade física',xp:60,stat:'Força'},
- {id:'w2',name:'Estudar em 5 dias da semana',xp:60,stat:'Intelecto'},
- {id:'w3',name:'Fazer 2 sessões de mobilidade',xp:45,stat:'Mobilidade'}
-];
-const fresh=()=>({name:'JOGADOR',xp:0,level:1,points:0,stats:{Força:1,Resistência:1,Mobilidade:1,Disciplina:1,Intelecto:1},daily:defaultsDaily.map(x=>({...x,done:false})),weekly:defaultsWeekly.map(x=>({...x,done:false})),dailyDate:today(),weeklyDate:weekKey(),history:[],trainings:[],streak:0,lastActive:null,totalCompleted:0});
+const initial = {
+  xp:0, level:1, coins:0,
+  stats:{strength:1,endurance:1,agility:1,
+  vitality:1,discipline:1},
+  completed:{}
+};
+
 let data;
-try{data=JSON.parse(localStorage.getItem('playerSystem30'))||fresh()}catch(e){data=fresh()}
-function save(){localStorage.setItem('playerSystem30',JSON.stringify(data));render()}
-function toast(t){let el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2300)}
-function addHistory(text,detail=''){data.history.unshift({date:new Date().toLocaleString('pt-BR'),text,detail});data.history=data.history.slice(0,100)}
-function checkPeriods(){
- if(data.dailyDate!==today()){data.daily=defaultsDaily.map(x=>({...x,done:false}));data.dailyDate=today();addHistory('As missões diárias foram renovadas')}
- if(data.weeklyDate!==weekKey()){data.weekly=defaultsWeekly.map(x=>({...x,done:false}));data.weeklyDate=weekKey();addHistory('As missões semanais foram renovadas')}
+try {
+  data=JSON.parse(localStorage.getItem("playerSystemSave"))||initial;
+} catch(e) { data=initial; }
+
+const missions=[
+  {id:"m1",icon:"💪",name:"Treinamento físico",
+   desc:"Faça um treino adequado ao seu nível.",xp:30,stat:"strength"},
+  {id:"m2",icon:"🚶",name:"Movimente-se",
+   desc:"Faça uma caminhada ou atividade leve.",xp:15,stat:"endurance"},
+  {id:"m3",icon:"💧",name:"Hidratação",
+   desc:"Mantenha uma boa hidratação durante o dia.",xp:10,stat:"vitality"},
+  {id:"m4",icon:"📚",name:"Desenvolvimento mental",
+   desc:"Estude ou aprenda algo por 20 minutos.",xp:20,stat:"discipline"},
+  {id:"m5",icon:"🧘",name:"Mobilidade e recuperação",
+   desc:"Faça alongamentos leves e respeite seu corpo.",xp:15,stat:"agility"}
+];
+
+function save(){
+  localStorage.setItem("playerSystemSave",JSON.stringify(data));
 }
-function rank(){if(data.level>=50)return'S';if(data.level>=35)return'A';if(data.level>=25)return'B';if(data.level>=15)return'C';if(data.level>=7)return'D';return'E'}
-function className(){return data.level>=50?'Monarca':data.level>=35?'Caçador Supremo':data.level>=25?'Caçador Elite':data.level>=15?'Caçador Veterano':data.level>=7?'Caçador': 'Novato'}
-function awardXP(amount,reason){data.xp+=amount;let ups=0;while(data.xp>=data.level*100){data.xp-=data.level*100;data.level++;data.points+=3;ups++}addHistory(reason,'+'+amount+' XP');if(ups)toast('NÍVEL AUMENTOU! +' + ups + ' nível(is) · +'+(ups*3)+' pontos')}
-function completeMission(type,id){let list=type==='daily'?data.daily:data.weekly;let m=list.find(x=>x.id===id);if(!m||m.done)return;m.done=true;data.totalCompleted++;if(m.stat&&data.stats[m.stat]!==undefined)data.stats[m.stat]+=1;let now=today();if(data.lastActive!==now){let y=new Date();y.setDate(y.getDate()-1);let yesterday=y.toLocaleDateString('en-CA');data.streak=data.lastActive===yesterday?data.streak+1:1;data.lastActive=now}awardXP(m.xp,'Missão concluída: '+m.name);save();toast('Missão concluída · +'+m.xp+' XP')}
-function addMission(){let input=document.getElementById('missionInput'),name=input.value.trim();if(!name){toast('Digite o nome da missão');return}let type=document.getElementById('missionType').value,list=type==='daily'?data.daily:data.weekly;list.push({id:'custom-'+Date.now(),name,xp:type==='daily'?20:60,done:false,custom:true});input.value='';addHistory('Nova missão criada: '+name);save();toast('Missão adicionada')}
-function renderMissions(){[['dailyList',data.daily,'daily'],['weeklyList',data.weekly,'weekly']].forEach(([id,list,type])=>{let el=document.getElementById(id);el.innerHTML='';if(!list.length){el.innerHTML='<div class="empty">Nenhuma missão cadastrada.</div>';return}list.forEach(m=>{let row=document.createElement('div');row.className='mission'+(m.done?' done':'');let left=document.createElement('div');left.innerHTML='<div class="mname"></div><div class="mmeta">'+m.xp+' XP · '+(m.done?'Concluída':'Pendente')+'</div>';left.querySelector('.mname').textContent=m.name;let btn=document.createElement('button');btn.className='btn small';btn.textContent=m.done?'Concluída':'Concluir';btn.disabled=m.done;btn.onclick=()=>completeMission(type,m.id);row.append(left,btn);el.append(row)})})}
-function renderStats(){let names=Object.keys(data.stats);document.getElementById('miniStats').innerHTML=names.slice(0,5).map(n=>`<div class="statrow"><div class="stathead"><span>${n.toUpperCase()}</span><strong>${data.stats[n]}</strong></div><div class="statbar"><span style="width:${Math.min(100,data.stats[n]*4)}%"></span></div></div>`).join('');document.getElementById('allStats').innerHTML=names.map(n=>`<div class="statrow"><div class="stathead"><span>${n.toUpperCase()}</span><strong>${data.stats[n]}</strong></div><div class="statbar"><span style="width:${Math.min(100,data.stats[n]*4)}%"></span></div><button class="btn secondary small" style="margin-top:7px" onclick="spendPoint('${n}')" ${data.points<1?'disabled':''}>＋ Evoluir · 1 ponto</button></div>`).join('');document.getElementById('points').textContent=data.points}
-function spendPoint(n){if(data.points<1)return;data.points--;data.stats[n]++;addHistory('Atributo evoluído: '+n);save();toast(n+' aumentado!')}
-function renderTraining(){let defs=[['Força','Exercícios de força e controle corporal'],['Resistência','Caminhada, corrida ou cardio leve'],['Mobilidade','Alongamento e mobilidade articular'],['Intelecto','Estudo focado ou leitura'],['Disciplina','Rotina, organização e hábitos']];document.getElementById('trainingGrid').innerHTML=defs.map(([n,d])=>`<div class="metric"><small>${n}</small><strong>${data.trainings.filter(t=>t.type===n).length}</strong><div class="smalltext">${d}</div></div>`).join('');document.getElementById('trainingHistory').innerHTML=data.trainings.length?data.trainings.slice(0,8).map(t=>`<div class="record"><span>${t.type} · ${t.minutes} min<br><span class="muted">${t.date}${t.note?' · '+escapeHTML(t.note):''}</span></span><strong>+${t.xp} XP</strong></div>`).join(''):'<div class="empty">Nenhum treino registrado ainda.</div>'}
-function logTraining(){let type=document.getElementById('trainingType').value,minutes=Number(document.getElementById('trainingMinutes').value),note=document.getElementById('trainingNote').value.trim();if(!Number.isFinite(minutes)||minutes<5||minutes>240){toast('Informe de 5 a 240 minutos');return}let xp=Math.min(40,Math.max(5,Math.round(minutes/5)*3));data.trainings.unshift({type,minutes,note,date:new Date().toLocaleString('pt-BR'),xp});data.stats[type]=(data.stats[type]||1)+1;awardXP(xp,'Treino registrado: '+type+' ('+minutes+' min)');document.getElementById('trainingNote').value='';save();toast('Atividade registrada · +'+xp+' XP')}
-function achievements(){let a=[['Primeiro passo',data.totalCompleted>=1,'Conclua sua primeira missão'],['Em movimento',data.trainings.length>=1,'Registre seu primeiro treino'],['Constância',data.streak>=3,'Mantenha uma sequência de 3 dias'],['Dedicado',data.totalCompleted>=10,'Conclua 10 missões'],['Caçador experiente',data.level>=10,'Alcance o nível 10'],['Elite',data.level>=25,'Alcance o nível 25'],['Monarca',data.level>=50,'Alcance o nível 50']];document.getElementById('achievementList').innerHTML=a.map(([n,ok,d])=>`<div class="record"><span>${ok?'🏆':'🔒'} <strong style="color:${ok?'var(--gold)':'var(--white)'}">${n}</strong><br><span class="muted">${d}</span></span><span class="tag">${ok?'DESBLOQUEADA':'BLOQUEADA'}</span></div>`).join('')}
-function renderHistory(){document.getElementById('historyList').innerHTML=data.history.length?data.history.map(h=>`<div class="record"><span>${escapeHTML(h.text)}<br><span class="muted">${escapeHTML(h.date)}</span></span><strong>${escapeHTML(h.detail||'')}</strong></div>`).join(''):'<div class="empty">Seu histórico aparecerá aqui conforme você evoluir.</div>'}
-function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){checkPeriods();document.getElementById('playerName').textContent=data.name||'JOGADOR';document.getElementById('level').textContent=String(data.level).padStart(2,'0');document.getElementById('rank').textContent='RANK '+rank();document.getElementById('xp').textContent=data.xp;document.getElementById('nextXp').textContent=data.level*100;document.getElementById('xpbar').style.width=(data.xp/(data.level*100)*100)+'%';document.getElementById('rankHint').textContent='Classe atual: '+className()+'. Continue cumprindo seus objetivos.';document.getElementById('streak').textContent=data.streak+' dias';document.getElementById('workouts').textContent=data.trainings.length;document.getElementById('completed').textContent=data.totalCompleted;document.getElementById('className').textContent=className();let done=data.daily.filter(m=>m.done).length;document.getElementById('todayCount').textContent=done+'/'+data.daily.length;document.getElementById('todayBar').style.width=(data.daily.length?done/data.daily.length*100:0)+'%';document.getElementById('nextGoal').textContent=data.totalCompleted===0?'Concluir sua primeira missão':data.level<7?'Alcançar o rank D':'Continuar subindo de nível';renderMissions();renderStats();renderTraining();achievements();renderHistory();document.getElementById('nameInput').value=data.name||''}
-function saveName(){let n=document.getElementById('nameInput').value.trim();if(!n){toast('Digite um nome');return}data.name=n;addHistory('Nome do jogador atualizado');save();toast('Perfil atualizado')}
-function go(id){document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo({top:0,behavior:'smooth'})}
-document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab)));
-function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='player-system-backup.json';a.click();URL.revokeObjectURL(url);toast('Backup preparado')}
-function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d.stats||!d.daily||!d.weekly)throw Error();data=d;save();toast('Backup importado')}catch(err){toast('Arquivo de backup inválido')}};r.readAsText(f)}
-function resetData(){if(confirm('Tem certeza? Todo o progresso salvo neste navegador será apagado. Exporte um backup antes, se quiser guardar seus dados.')){data=fresh();save();toast('Sistema reiniciado')}}
-checkPeriods();save();
+
+function rank(){
+  if(data.level>=50)return "RANK S — ELITE";
+  if(data.level>=30)return "RANK A — AVANÇADO";
+  if(data.level>=20)return "RANK B — EXPERIENTE";
+  if(data.level>=10)return "RANK C — DESENVOLVIDO";
+  if(data.level>=5)return "RANK D — DESPERTANDO";
+  return "RANK E — INICIANTE";
+}
+
+function render(){
+  document.getElementById("level").textContent="NÍVEL "+data.level;
+  document.getElementById("xptext").textContent=
+    data.xp+" / "+(data.level*100)+" XP";
+  document.getElementById("xpbar").style.width=
+    Math.min(100,data.xp/(data.level*100)*100)+"%";
+  document.getElementById("rank").textContent=rank();
+  document.getElementById("next").textContent=
+    (data.level*100-data.xp)+" XP para o próximo nível";
+  document.getElementById("coins").textContent=data.coins;
+
+  Object.keys(data.stats).forEach(key=>{
+    document.getElementById(key).textContent=data.stats[key];
+  });
+
+  const today=new Date().toLocaleDateString("en-CA");
+  document.getElementById("missions").innerHTML=missions.map(m=>{
+    const done=data.completed[today+"_"+m.id];
+    return `<div class="mission">
+      <div class="mission-icon">${m.icon}</div>
+      <div class="mission-info">
+        <div class="mission-name">${m.name}</div>
+        <div class="reward">${m.xp} XP · ${m.desc}</div>
+      </div>
+      <button class="complete" ${done?"disabled":""}
+      onclick="completeMission('${m.id}')">
+      ${done?"FEITA":"CONCLUIR"}
+      </button>
+    </div>`;
+  }).join("");
+}
+
+function completeMission(id){
+  const today=new Date().toLocaleDateString("en-CA");
+  const key=today+"_"+id;
+  if(data.completed[key])return;
+
+  const mission=missions.find(m=>m.id===id);
+  if(!mission)return;
+
+  data.completed[key]=true;
+  data.xp+=mission.xp;
+  data.coins+=5;
+  data.stats[mission.stat]++;
+
+  let leveled=false;
+  while(data.xp>=data.level*100){
+    data.xp-=data.level*100;
+    data.level++;
+    leveled=true;
+  }
+
+  save();
+  render();
+
+  if(leveled){
+    alert("LEVEL UP! Você alcançou o nível "+data.level+"!");
+  }else{
+    alert("MISSÃO CONCLUÍDA! +"+mission.xp+" XP");
+  }
+}
+
+render();
 </script>
 </body>
 </html>
